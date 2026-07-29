@@ -8,7 +8,7 @@ export default function ImageClient() {
   useEffect(() => {
     const id = setInterval(() => {
       setTimestamp(Date.now());
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 5 * 60 * 1000);
 
     return () => clearInterval(id);
   }, []);
@@ -16,22 +16,23 @@ export default function ImageClient() {
   return (
     <div
       style={{
-        width: "100vw",
-        height: "100vh",
+        width: "100%",
+        height: "100%",
         overflow: "hidden",
         margin: 0,
         padding: 0
       }}
     >
       <img
-        src={`/image.png`}
+        src="/image.png"
         style={{
           width: "100%",
           height: "100%",
-          objectFit: "cover",
+          objectFit: "fill",
           display: "block"
         }}
       />
     </div>
   );
 }
+
