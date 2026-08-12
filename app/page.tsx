@@ -1,11 +1,24 @@
-import fs from "fs";
-import path from "path";
-import ImageClient from "./ImageClient";
+import Link from "next/link";
 
 export default function Home() {
-  const imagePath = path.join(process.cwd(), "public", "image.png");
-  const stats = fs.statSync(imagePath);
-  const modifiedTime = stats.mtimeMs;
+  return (
+    <div style={{ padding: "2rem" }}>
+      <h1>Home</h1>
 
-  return <ImageClient/>;
+      <p>This device can open the dashboard once authenticated.</p>
+
+      <Link
+        href="/dashboard"
+        style={{
+          padding: "0.75rem 1.25rem",
+          background: "#0070f3",
+          color: "white",
+          borderRadius: "6px",
+          textDecoration: "none",
+        }}
+      >
+        Open Dashboard
+      </Link>
+    </div>
+  );
 }
