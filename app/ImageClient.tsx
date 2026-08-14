@@ -1,29 +1,38 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ImageClient() {
+  const [timestamp, setTimestamp] = useState(Date.now());
+
   useEffect(() => {
-    const evtSource = new EventSource("/api/image_refresh");
+    const id = setInterval(() => {
+      setTimestamp(Date.now());
+    }, 5 * 60 * 1000);
 
-    evtSource.onmessage = (event) => {
-      if (event.data === "changed") {
-        window.location.reload();
-      }
-    };
-
-    return () => evtSource.close();
+    return () => clearInterval(id);
   }, []);
 
   return (
-    <img
-      src="/image.png"
+    <div
       style={{
-        width: "100%",
-        height: "100%",
-        objectFit: "fill",
-        display: "block"
+        width: "90vw",
+        height: "90vh",
+        overflow: "hidden",
+        margin: 0,
+        padding: 0
       }}
-    />
+    >
+      <img
+        src="/image.png"
+        style={{
+          width: "90vw",
+          height: "90vh",
+          objectFit: "fill",
+          display: "block"
+        }}
+      />
+    </div>
   );
 }
+
