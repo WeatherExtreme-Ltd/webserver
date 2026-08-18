@@ -12,17 +12,24 @@ export async function GET(req: NextRequest) {
     start(controller) {
       controller.enqueue(encoder.encode("data: connected\n\n"));
 
-      const watcher = fs.watch(filePath, (eventType) => {
-        if (eventType === "change") {
-          controller.enqueue(encoder.encode("data: changed\n\n"));
+      fs.watchFile(filePath, { interval: 500 }, (curr, prev) => {
+        if (curr.mtimeMs !== prev.mtimeMs) {
+          try {
+            controller.enqueue(encoder.encode("data: changed\n\n"));
+          } catch {
+            // Controller closed
+          }
         }
       });
 
       req.signal.addEventListener("abort", () => {
-        watcher.close();
-        controller.close();
+        fs.unwatchFile(filePath);
+        try {
+          controller.close();
+        } catch {
+        }
       });
-    }
+    },
   });
 
   return new Response(stream, {
