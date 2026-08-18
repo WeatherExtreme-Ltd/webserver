@@ -1,8 +1,6 @@
-"use client"
-
 import ImageClient from "../ImageClient";
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
     return (
         <div>
             <ImageClient />

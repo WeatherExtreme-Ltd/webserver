@@ -6,11 +6,21 @@ export default function ImageClient() {
   const [timestamp, setTimestamp] = useState(Date.now());
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setTimestamp(Date.now());
-    }, 5 * 60 * 1000);
+    const eventSource = new EventSource("/api/image_refresh");
 
-    return () => clearInterval(id);
+    eventSource.onmessage = (event) => {
+      if (event.data === "changed") {
+        setTimestamp(Date.now());
+      }
+    };
+
+    eventSource.onerror = (err) => {
+      console.error("SSE connection error:", err);
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, []);
 
   return (
