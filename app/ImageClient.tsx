@@ -34,7 +34,7 @@ export default function ImageClient() {
       }}
     >
       <img
-        src={`/image.png?t=${timestamp}`}
+        src={`/api/image?v=${timestamp}`}
         style={{
           width: "90vw",
           height: "90vh",
